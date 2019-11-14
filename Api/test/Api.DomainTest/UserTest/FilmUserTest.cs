@@ -1,4 +1,5 @@
-﻿using Api.DomainTest._Util;
+﻿using Api.DomainTest._Builder;
+using Api.DomainTest._Util;
 using ExpectedObjects;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,17 @@ using Xunit;
 
 namespace Api.DomainTest.UserTest {
     public class FilmUserTest {
+        private readonly int _usuario_id;
+        private readonly int _filme_id;
+        public FilmUserTest() {
+            _usuario_id = 1;
+            _filme_id = 1;
+        }
         [Fact]
         public void DevoCriarFilmeUsuario() {
             var FilmeUsuarioEsperado = new {
-                Usuario_Id = 1,
-                Filme_Id = 1
+                Usuario_Id = _usuario_id,
+                Filme_Id = _filme_id
             };
 
             var filmeUsuario = new FilmUser(FilmeUsuarioEsperado.Usuario_Id, FilmeUsuarioEsperado.Filme_Id);
@@ -23,24 +30,18 @@ namespace Api.DomainTest.UserTest {
         [InlineData(0)]
         [InlineData(-1)]
         public void UsuarioIdNaoDeveSerZeroOuNegativo(int usuarioId) {
-            var FilmeUsuarioEsperado = new {
-                Filme_Id = 1
-            };
 
             Assert.Throws<ArgumentException>(() =>
-                                new FilmUser(usuarioId, FilmeUsuarioEsperado.Filme_Id)).ComMensagem("Id do usuário inválido");
+                                FilmUserBuilder.Novo().ComUserId(usuarioId).Build()).ComMensagem("Id do usuário inválido");
         }
 
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
         public void FilmeIdNaoDeveSerZeroOuNegativo(int filmeId) {
-            var FilmeUsuarioEsperado = new {
-                Usuario_Id = 1
-            };
 
             Assert.Throws<ArgumentException>(() =>
-                                new FilmUser(FilmeUsuarioEsperado.Usuario_Id, filmeId)).ComMensagem("Id do filme inválido");
+                                FilmUserBuilder.Novo().ComFilmId(filmeId).Build()).ComMensagem("Id do filme inválido");
         }
     }
 

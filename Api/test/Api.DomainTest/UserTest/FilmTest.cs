@@ -1,4 +1,5 @@
-﻿using Api.DomainTest._Util;
+﻿using Api.DomainTest._Builder;
+using Api.DomainTest._Util;
 using ExpectedObjects;
 using System;
 using System.Collections.Generic;
@@ -7,13 +8,23 @@ using Xunit;
 
 namespace Api.DomainTest.UserTest {
     public class FilmTest {
+        private readonly int _filme_id;
+        private readonly string _titulo;
+        private readonly double _nota;
+        private readonly string _lancamento;
+        public FilmTest() {
+            _filme_id = 1;
+            _titulo = "Os Vingadores";
+            _nota = 4.75;
+            _lancamento = "2019-01-01";
+        }
         [Fact]
         public void DevoCriarFilme() {
             var filmeEsperado = new {
-                Filme_Id = (int)1,
-                Titulo = "Os Vingadores",
-                Nota = (double)4.75,
-                Lancamento = "2019-01-01"
+                Filme_Id = _filme_id,
+                Titulo = _titulo,
+                Nota = _nota,
+                Lancamento = _lancamento
             };
 
             var filme = new Film(filmeEsperado.Filme_Id, filmeEsperado.Titulo, filmeEsperado.Nota, filmeEsperado.Lancamento);
@@ -25,14 +36,9 @@ namespace Api.DomainTest.UserTest {
         [InlineData(0)]
         [InlineData(-1)]
         public void FilmeIdNaoDeveSerZeroOuNegativo(int filmeId) {
-            var filmeEsperado = new {
-                Titulo = "Os Vingadores",
-                Nota = (double)4.75,
-                Lancamento = "2019-01-01"
-            };
 
             var messagem = Assert.Throws<ArgumentException>(() =>
-                                new Film(filmeId, filmeEsperado.Titulo, filmeEsperado.Nota, filmeEsperado.Lancamento)).Message;
+                                FilmBuilder.Novo().ComFilmeId(filmeId).Build()).Message;
             Assert.Equal("Id do filme inválido", messagem);
         }
 
@@ -40,14 +46,9 @@ namespace Api.DomainTest.UserTest {
         [InlineData("")]
         [InlineData(null)]
         public void TituloNaoDeveSerVazioOuNulo(string titulo) {
-            var filmeEsperado = new {
-                Filme_Id = (int)1,
-                Nota = (double)4.75,
-                Lancamento = "2019-01-01"
-            };
 
             Assert.Throws<ArgumentException>(() =>
-                                new Film(filmeEsperado.Filme_Id, titulo, filmeEsperado.Nota, filmeEsperado.Lancamento)).ComMensagem("Título do filme inválido");
+                                FilmBuilder.Novo().ComTitulo(titulo).Build()).ComMensagem("Título do filme inválido");
         }
 
         [Theory]
@@ -56,13 +57,13 @@ namespace Api.DomainTest.UserTest {
         [InlineData(6)]
         public void NotaNaoDeveSerZeroOuNegativoOuMaiorQueCinco(int nota) {
             var filmeEsperado = new {
-                Filme_Id = (int)1,
-                Titulo = "Os Vingadores",
-                Lancamento = "2019-01-01"
+                Filme_Id = _filme_id,
+                Titulo = _titulo,
+                Lancamento = _lancamento
             };
 
             Assert.Throws<ArgumentException>(() =>
-                                new Film(filmeEsperado.Filme_Id, filmeEsperado.Titulo, nota, filmeEsperado.Lancamento)).ComMensagem("Nota do filme inválida");
+                                FilmBuilder.Novo().ComNota(nota).Build()).ComMensagem("Nota do filme inválida");
         }
 
         [Theory]
@@ -70,13 +71,13 @@ namespace Api.DomainTest.UserTest {
         [InlineData(null)]
         public void LancamentoNaoDeveSerVazioOuNuloOuNaoData(string lancamento) {
             var filmeEsperado = new {
-                Filme_Id = (int)1,
-                Titulo = "Os Vingadores",
-                Nota = (double)4.75
+                Filme_Id = _filme_id,
+                Titulo = _titulo,
+                Nota = _nota
             };
 
             Assert.Throws<ArgumentException>(() =>
-                                new Film(filmeEsperado.Filme_Id, filmeEsperado.Titulo, filmeEsperado.Nota, lancamento)).ComMensagem("Lancamento do filme inválido");
+                                FilmBuilder.Novo().ComLancamento(lancamento).Build()).ComMensagem("Lancamento do filme inválido");
         }
     }
 
