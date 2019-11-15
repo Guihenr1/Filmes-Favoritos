@@ -1,22 +1,24 @@
-﻿using Api.DomainTest._Builder;
+﻿using Api.Domain.Model;
+using Api.DomainTest._Builder;
 using Api.DomainTest._Util;
+using Bogus;
 using ExpectedObjects;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
-namespace Api.DomainTest.UserTest {
+namespace Api.DomainTest.FilmTest {
     public class FilmTest {
         private readonly int _filme_id;
         private readonly string _titulo;
         private readonly double _nota;
         private readonly string _lancamento;
         public FilmTest() {
-            _filme_id = 1;
-            _titulo = "Os Vingadores";
-            _nota = 4.75;
-            _lancamento = "2019-01-01";
+            var fake = new Faker();
+
+            _filme_id = fake.Random.Int(1, 9999);
+            _titulo = fake.Random.Word();
+            _nota = fake.Random.Double(0.1, 5);
+            _lancamento = fake.Random.Word();
         }
         [Fact]
         public void DevoCriarFilme() {
@@ -79,31 +81,5 @@ namespace Api.DomainTest.UserTest {
             Assert.Throws<ArgumentException>(() =>
                                 FilmBuilder.Novo().ComLancamento(lancamento).Build()).ComMensagem("Lancamento do filme inválido");
         }
-    }
-
-    public class Film {
-        public Film(int filme_Id, string titulo, double nota, string lancamento) {
-            if (filme_Id <= 0)
-                throw new ArgumentException("Id do filme inválido");
-            
-            if (string.IsNullOrEmpty(titulo))
-                throw new ArgumentException("Título do filme inválido");
-
-            if (nota <= 0 || nota > 5)
-                throw new ArgumentException("Nota do filme inválida");
-
-            if (string.IsNullOrEmpty(lancamento))
-                throw new ArgumentException("Lancamento do filme inválido");
-
-            Filme_Id = filme_Id;
-            Titulo = titulo;
-            Nota = nota;
-            Lancamento = lancamento;
-        }
-
-        public int Filme_Id { get; private set; }
-        public string Titulo { get; private set; }
-        public double Nota { get; private set; }
-        public string Lancamento { get; private set; }
     }
 }

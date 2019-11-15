@@ -1,20 +1,22 @@
-﻿using Api.DomainTest._Builder;
+﻿using Api.Domain.Model;
+using Api.DomainTest._Builder;
 using Api.DomainTest._Util;
+using Bogus;
 using ExpectedObjects;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
-namespace Api.DomainTest.UserTest {
+namespace Api.DomainTest.FilmTest {
     public class UserTest {
         private readonly string _cpf;
         private readonly string _nome;
         private readonly string _senha;
         public UserTest() {
-            _cpf = "453.461.528-06";
-            _nome = "Guilherme";
-            _senha = "123456";
+            var fake = new Faker();
+
+            _cpf = fake.Random.Word();
+            _nome = fake.Random.Word();
+            _senha = fake.Random.Word();
         }
         [Fact]
         public void DevoCriarUsuario() {
@@ -56,26 +58,5 @@ namespace Api.DomainTest.UserTest {
             Assert.Throws<ArgumentException>(() =>
                                 UserBuilder.Novo().ComSenha(senha).Build()).ComMensagem("Senha inválida");
         }
-    }
-
-    public class User {
-        public User(string cpf, string nome, string senha) {
-            if (string.IsNullOrEmpty(cpf))
-                throw new ArgumentException("Cpf inválido");
-
-            if (string.IsNullOrEmpty(nome))
-                throw new ArgumentException("Nome inválido");
-
-            if (string.IsNullOrEmpty(senha))
-                throw new ArgumentException("Senha inválida");
-
-            CPF = cpf;
-            Nome = nome;
-            Senha = senha;
-        }
-
-        public string CPF { get; private set; }
-        public string Nome { get; private set; }
-        public string Senha { get; private set; }
-    }
+    }    
 }

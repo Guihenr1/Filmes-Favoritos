@@ -1,4 +1,4 @@
-﻿using Api.DomainTest.UserTest;
+﻿using Api.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
