@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Api.Domain._Base;
+using System;
 
-namespace Api.Domain.Model {
-    public class User {
+namespace Api.Domain.User {
+    public class User : Entity {
         public User(string cpf, string nome, string senha) {
             if (string.IsNullOrEmpty(cpf))
                 throw new ArgumentException("Cpf inválido");

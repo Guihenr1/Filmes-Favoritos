@@ -1,7 +1,4 @@
-﻿using Api.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Api.Domain.User;
 
 namespace Api.DomainTest._Builder {
     public class FilmUserBuilder {

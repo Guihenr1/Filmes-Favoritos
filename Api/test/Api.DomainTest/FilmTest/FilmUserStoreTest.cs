@@ -1,12 +1,30 @@
-﻿using Api.Domain.Model;
+﻿using Api.Domain.User;
+using Bogus;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Api.DomainTest.FilmTest {
     public class FilmUserStoreTest {
+        private readonly FilmUserDto _filmUserDto;
+        private readonly FilmUserStore _filmUserStore;
+        private readonly Mock<IFilmUserRepository> _filmUserRepository;
+        public FilmUserStoreTest() {
+            var fake = new Faker();
+
+            _filmUserDto = new FilmUserDto {
+                Usuario = new User(fake.Random.Word()
+                                    , fake.Random.Word()
+                                    , fake.Random.Word()),
+                Filme = new Film(fake.Random.Int(1, 9999)
+                                    , fake.Random.Word()
+                                    , fake.Random.Double(0.1, 5)
+                                    , fake.Random.Word())
+            };
+
+            _filmUserRepository = new Mock<IFilmUserRepository>();
+
+            _filmUserStore = new FilmUserStore(_filmUserRepository.Object);
+        }
         [Fact]
         public void DevoAdicionarFilmeUsuario() {
             var filmUserDto = new FilmUserDto {
@@ -22,27 +40,5 @@ namespace Api.DomainTest.FilmTest {
 
             filmUserRepositoryMock.Verify(r => r.Add(It.IsAny<FilmUser>()));
         }
-    }
-
-    public interface IFilmUserRepository {
-        void Add(FilmUser filmUserDto);
-    }
-
-    public class FilmUserStore {
-        private readonly IFilmUserRepository _filmUserRepository;
-        public FilmUserStore(IFilmUserRepository filmUserRepository) {
-            _filmUserRepository = filmUserRepository;
-        }
-
-        public void Add(FilmUserDto filmUserDto) {
-            var filmUser = new FilmUser(filmUserDto.Usuario, filmUserDto.Filme);
-
-            _filmUserRepository.Add(filmUser);
-        }
-    }
-
-    public class FilmUserDto {
-        public User Usuario { get; set; }
-        public Film Filme { get; set; }
     }
 }

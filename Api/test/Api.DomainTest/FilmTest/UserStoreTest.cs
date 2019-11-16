@@ -1,51 +1,46 @@
-﻿using Api.Domain.Model;
+﻿using Api.Domain.User;
+using Api.DomainTest._Builder;
+using Api.DomainTest._Util;
+using Bogus;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Api.DomainTest.FilmTest {
     public class UserStoreTest {
-        [Fact]
-        public void DevoAdicionarUsuario() {
-            var userDto = new UserDto {
-                CPF = "453.461.555.22",
-                Nome = "Guilherme",
-                Senha = "123456"
+        private readonly UserDto _userDto;
+        private readonly UserStore _userStore;
+        private readonly Mock<IUserRepository> _userRepositoryMock;
+        public UserStoreTest() {
+            var fake = new Faker();
+
+            _userDto = new UserDto {
+                CPF = fake.Random.Word(),
+                Nome = fake.Random.Word(),
+                Senha = fake.Random.Word()
             };
 
-            var userRepositoryMock = new Mock<IUserRepository>();
+            _userRepositoryMock = new Mock<IUserRepository>();
 
-            var userStore = new UserStore(userRepositoryMock.Object);
-
-            userStore.Add(userDto);
-
-            userRepositoryMock.Verify(r => r.Add(It.IsAny<User>()));
+            _userStore = new UserStore(_userRepositoryMock.Object);
         }
-    }
+        [Fact]
+        public void DevoAdicionarUsuario() {
 
-    public class UserStore {
-        private readonly IUserRepository _userRepository;
-        public UserStore(IUserRepository userRepository) {
-            _userRepository = userRepository;
+            _userStore.Add(_userDto);
+
+            _userRepositoryMock.Verify(r => r.Add(It.Is<User>(
+                c => c.Nome == _userDto.Nome &&
+                c.CPF == _userDto.CPF
+            )));
         }
+        [Fact]
+        public void NaoDevoAdicionarUsuarioComCPFJaCadastrado() {
+            var userAlreadySave = UserBuilder.Novo().ComCpf(_userDto.CPF).Build();
+            _userRepositoryMock.Setup(r => r.getCpf(_userDto.CPF)).Returns(userAlreadySave);
 
-        public void Add(UserDto userDto) {
-            var user = new User(userDto.CPF, userDto.Nome, userDto.Senha);
-
-            _userRepository.Add(user);
+            Assert.Throws<ArgumentException>(() => _userStore.Add(_userDto))
+                .ComMensagem("Usuário já cadastrado");
         }
-    }
-
-    public interface IUserRepository
-    {
-        void Add(User user);
-    }
-
-    public class UserDto {
-        public string CPF { get; set; }
-        public string Nome { get; set; }
-        public string Senha { get; set; }
-    }
+    }    
 }

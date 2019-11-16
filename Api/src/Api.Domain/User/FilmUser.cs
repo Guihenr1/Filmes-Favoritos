@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Api.Domain._Base;
+using System;
 
-namespace Api.Domain.Model {
-    public class FilmUser {
+namespace Api.Domain.User {
+    public class FilmUser : Entity {
         public FilmUser(User usuario, Film filme) {
             if (usuario == null)
                 throw new ArgumentException("Usuário inválido");

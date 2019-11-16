@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Api.Domain._Base;
+using System;
 
-namespace Api.Domain.Model {
-    public class Film {
+namespace Api.Domain.User {
+    public class Film : Entity {
         public Film(int filme_Id, string titulo, double nota, string lancamento) {
             if (filme_Id <= 0)
                 throw new ArgumentException("Id do filme inválido");

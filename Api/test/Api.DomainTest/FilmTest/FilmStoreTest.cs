@@ -1,49 +1,34 @@
-﻿using Api.Domain.Model;
+﻿using Api.Domain.User;
+using Bogus;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Api.DomainTest.FilmTest {
     public class FilmStoreTest {
-        [Fact]
-        public void DevoAdicionarFilme() {
-            var filmDto = new FilmDto {
-                Filme_Id = 1,
-                Titulo = "AAA",
-                Nota = 5,
-                Lancamento = "2019-01-01"
+        private readonly FilmDto _filmDto;
+        private readonly FilmStore _filmStore;
+        private readonly Mock<IFilmRepository> _filmRepositoryMock;
+        public FilmStoreTest() {
+            var fake = new Faker();
+
+            _filmDto = new FilmDto() {
+                Filme_Id = fake.Random.Int(1, 9999),
+                Titulo = fake.Random.Word(),
+                Nota = fake.Random.Double(0.1, 5),
+                Lancamento = fake.Random.Word()
             };
 
-            var filmRepositoryMock = new Mock<IFilmRepository>();
+            _filmRepositoryMock = new Mock<IFilmRepository>();
 
-            var filmStore = new FilmStore(filmRepositoryMock.Object);
-
-            filmStore.Add(filmDto);
-
-            filmRepositoryMock.Verify(r => r.Add(It.IsAny<Film>()));
+            _filmStore = new FilmStore(_filmRepositoryMock.Object);
         }
-    }
-    public interface IFilmRepository {
-        void Add(Film film);
-    }
-    public class FilmStore {
-        private readonly IFilmRepository _filmRepository;
-        public FilmStore(IFilmRepository filmRepository) {
-            _filmRepository = filmRepository;
-        }
+        [Fact]
+        public void DevoAdicionarFilme() {
+            _filmStore.Add(_filmDto);
 
-        public void Add(FilmDto filmDto) {
-            var film = new Film(filmDto.Filme_Id, filmDto.Titulo, filmDto.Nota, filmDto.Lancamento);
-
-            _filmRepository.Add(film);
+            _filmRepositoryMock.Verify(r => r.Add(It.Is<Film>(
+                c => c.Titulo == c.Titulo    
+            )));
         }
-    }
-    public class FilmDto {
-        public int Filme_Id { get; set; }
-        public string Titulo { get; set; }
-        public double Nota { get; set; }
-        public string Lancamento { get; set; }
     }
 }

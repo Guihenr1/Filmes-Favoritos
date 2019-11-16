@@ -1,4 +1,4 @@
-﻿using Api.Domain.Model;
+﻿using Api.Domain.User;
 using Api.DomainTest._Builder;
 using Api.DomainTest._Util;
 using Bogus;
