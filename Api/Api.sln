@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Domain", "src\Api.Domai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.DomainTest", "test\Api.DomainTest\Api.DomainTest.csproj", "{C309B6E8-7267-4041-892D-4D35275DFB27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Web", "src\Api.Web\Api.Web.csproj", "{438FE7CE-3F6D-4BD3-9B7F-183036CB2676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Web", "src\Api.Web\Api.Web.csproj", "{438FE7CE-3F6D-4BD3-9B7F-183036CB2676}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Data", "Api.Data\Api.Data.csproj", "{4E6D5594-CEC7-42F9-9D0B-F40503D67AFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Data", "src\Api.Data\Api.Data.csproj", "{4E6D5594-CEC7-42F9-9D0B-F40503D67AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Ioc", "src\Api.Ioc\Api.Ioc.csproj", "{EA8840F4-FBE0-4F9F-888B-74C5079A8749}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4E6D5594-CEC7-42F9-9D0B-F40503D67AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E6D5594-CEC7-42F9-9D0B-F40503D67AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E6D5594-CEC7-42F9-9D0B-F40503D67AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA8840F4-FBE0-4F9F-888B-74C5079A8749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA8840F4-FBE0-4F9F-888B-74C5079A8749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA8840F4-FBE0-4F9F-888B-74C5079A8749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA8840F4-FBE0-4F9F-888B-74C5079A8749}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
