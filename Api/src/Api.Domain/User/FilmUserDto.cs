@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Api.Domain.User {
     public class FilmUserDto {
-        public User Usuario { get; set; }
-        public Film Filme { get; set; }
+        public int UsuarioId { get; set; }
+        public int FilmeId { get; set; }
     }
 }

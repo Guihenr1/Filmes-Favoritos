@@ -12,6 +12,8 @@ namespace Api.Data.Context {
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Film> Films { get; set; }
+        public DbSet<FilmUser> FilmsUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);

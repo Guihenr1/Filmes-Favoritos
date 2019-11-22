@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Domain._Base;
 using Api.Domain.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,28 @@ namespace Api.Web.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserStore _userStore;
-        public UserController(UserStore userStore) {
+        private readonly IRepository<User> _repository;
+        public UserController(UserStore userStore, IRepository<User> repository) {
             _userStore = userStore;
+            _repository = repository;
         }
         [HttpPost]
-        public IActionResult Salvar(UserDto model) {
+        public IActionResult Salvar([FromBody]UserDto model) {
             _userStore.Add(model);
             return Ok();
+        }
+        [HttpGet]
+        public IActionResult Listar() {
+            var result = _repository.Get();
+            if (result.Any()) {
+                var userDto = result.Select(u => new UserDto {
+                    CPF = u.CPF,
+                    Nome = u.Nome,
+                    Senha = u.Senha
+                });
+                return Ok(userDto);
+            }
+            return null;
         }
     }
 }

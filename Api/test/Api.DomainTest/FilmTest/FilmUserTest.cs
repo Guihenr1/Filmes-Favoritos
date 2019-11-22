@@ -8,22 +8,19 @@ using Xunit;
 
 namespace Api.DomainTest.FilmTest {
     public class FilmUserTest {
-        private readonly User _usuario;
-        private readonly Film _filme;
+        private readonly int _usuarioId;
+        private readonly int _filmeId;
         public FilmUserTest() {
             var fake = new Faker();
 
-            _usuario = new User(fake.Random.Word(), fake.Random.Word(), fake.Random.Word());
-            _filme = new Film(fake.Random.Int(1, 9999)
-                                , fake.Random.Word()
-                                , fake.Random.Double(0.1, 5)
-                                , fake.Random.Word());
+            _usuarioId = 1;
+            _filmeId = 1;
         }
         [Fact]
         public void DevoCriarFilmeUsuario() {
             var FilmeUsuarioEsperado = new {
-                Usuario = _usuario,
-                Filme = _filme
+                Usuario = _usuarioId,
+                Filme = _filmeId
             };
 
             var filmeUsuario = new FilmUser(FilmeUsuarioEsperado.Usuario, FilmeUsuarioEsperado.Filme);
@@ -33,7 +30,7 @@ namespace Api.DomainTest.FilmTest {
 
         [Theory]
         [InlineData(null)]
-        public void UserNaoPodeSerNulo(User user) {
+        public void UserNaoPodeSerNulo(int user) {
 
             Assert.Throws<ArgumentException>(() =>
                                 FilmUserBuilder.Novo().ComUserId(user).Build()).ComMensagem("Usuário inválido");
@@ -41,7 +38,7 @@ namespace Api.DomainTest.FilmTest {
 
         [Theory]
         [InlineData(null)]
-        public void FilmNaoPodeSerNulo(Film film) {
+        public void FilmNaoPodeSerNulo(int film) {
 
             Assert.Throws<ArgumentException>(() =>
                                 FilmUserBuilder.Novo().ComFilmId(film).Build()).ComMensagem("Filme inválido");

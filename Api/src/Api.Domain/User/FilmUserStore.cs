@@ -10,7 +10,7 @@ namespace Api.Domain.User {
         }
 
         public void Add(FilmUserDto filmUserDto) {
-            var filmUser = new FilmUser(filmUserDto.Usuario, filmUserDto.Filme);
+            var filmUser = new FilmUser(filmUserDto.UsuarioId, filmUserDto.FilmeId);
 
             _filmUserRepository.Add(filmUser);
         }

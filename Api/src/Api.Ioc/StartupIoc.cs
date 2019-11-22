@@ -13,9 +13,10 @@ namespace Api.Ioc {
     public static class StartupIoc {
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration["ConnextionString"]));
+                options.UseSqlServer(configuration["ConnectionString"]));
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped<UserStore>();
         }
     }

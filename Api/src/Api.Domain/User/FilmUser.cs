@@ -3,18 +3,20 @@ using System;
 
 namespace Api.Domain.User {
     public class FilmUser : Entity {
-        public FilmUser(User usuario, Film filme) {
-            if (usuario == null)
+        public FilmUser(int usuarioId, int filmeId) {
+            if (usuarioId == 0)
                 throw new ArgumentException("Usuário inválido");
 
-            if (filme == null)
+            if (filmeId == 0)
                 throw new ArgumentException("Filme inválido");
 
-            Usuario = usuario;
-            Filme = filme;
+            UsuarioId = usuarioId;
+            FilmeId = filmeId;
         }
 
+        public int UsuarioId { get; private set; }
         public User Usuario { get; private set; }
+        public int FilmeId { get; private set; }
         public Film Filme { get; private set; }
     }
 }
