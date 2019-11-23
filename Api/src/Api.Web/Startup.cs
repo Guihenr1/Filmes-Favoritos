@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Domain._Base;
 using Api.Ioc;
+using Api.Web.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,15 +43,10 @@ namespace Api.Web {
                 await unitOfWork.Commit();
             });
 
-            if (env.IsDevelopment()) {
-                app.UseDeveloperExceptionPage();
-            } else {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseMiddleware(typeof(CustomExceptionFilter));
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
