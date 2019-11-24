@@ -13,7 +13,7 @@ namespace Api.Domain.User {
             var userExists = _userRepository.getCpf(userDto.CPF);
 
             if (userExists != null)
-                throw new ArgumentException("Usuário já cadastrado");
+                throw new ArgumentException(Resource.UsuarioJaCadastrado);
 
             var user = new User(userDto.CPF, userDto.Nome, userDto.Senha);
 

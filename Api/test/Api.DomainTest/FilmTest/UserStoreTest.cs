@@ -40,7 +40,14 @@ namespace Api.DomainTest.FilmTest {
             _userRepositoryMock.Setup(r => r.getCpf(_userDto.CPF)).Returns(userAlreadySave);
 
             Assert.Throws<ArgumentException>(() => _userStore.Add(_userDto))
-                .ComMensagem("Usuário já cadastrado");
+                .ComMensagem(Resource.UsuarioJaCadastrado);
         }
+
+        //[Fact]
+        //public void DevoAlterarDadosDoUsuario() {
+        //    _userDto.CPF = "000.000.000-00";
+        //    var user = UserBuilder.Novo().Build();
+        //    _userRepositoryMock.Setup(r => r.getCpf)
+        //}
     }    
 }

@@ -33,12 +33,11 @@ namespace Api.DomainTest.FilmTest {
 
         [Theory]
         [InlineData("")]
-
         [InlineData(null)]
         public void CPFNaoDeveSerVazioOuNulo(string cpf) {
 
             Assert.Throws<ArgumentException>(() =>
-                                    UserBuilder.Novo().ComCpf(cpf).Build()).ComMensagem("Cpf inválido");
+                                    UserBuilder.Novo().ComCpf(cpf).Build()).ComMensagem(Resource.CPFInvalido);
         }
 
         [Theory]
@@ -47,7 +46,7 @@ namespace Api.DomainTest.FilmTest {
         public void NomeNaoDeveSerVazioOuNulo(string nome) {
 
             Assert.Throws<ArgumentException>(() =>
-                                        UserBuilder.Novo().ComNome(nome).Build()).ComMensagem("Nome inválido");
+                                        UserBuilder.Novo().ComNome(nome).Build()).ComMensagem(Resource.NomeInvalido);
         }
 
         [Theory]
@@ -56,7 +55,67 @@ namespace Api.DomainTest.FilmTest {
         public void SenhaNaoDeveSerNulaOuVazia(string senha) {
 
             Assert.Throws<ArgumentException>(() =>
-                                UserBuilder.Novo().ComSenha(senha).Build()).ComMensagem("Senha inválida");
+                                UserBuilder.Novo().ComSenha(senha).Build()).ComMensagem(Resource.SenhaInvalida);
+        }
+
+        [Fact]
+        public void DevoAlterarCPF() {
+            var CPFEsperado = "000.000.000-00";
+            var user = UserBuilder.Novo().Build();
+
+            user.AlterarCPF(CPFEsperado);
+
+            Assert.Equal(CPFEsperado, user.CPF);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void NaoDeveAlterarCPF(string CPFInvalido) {
+            var user = UserBuilder.Novo().Build();
+
+            Assert.Throws<ArgumentException>(() => user.AlterarCPF(CPFInvalido))
+                .ComMensagem(Resource.CPFInvalido);
+        }
+
+        [Fact]
+        public void DevoAlterarNome() {
+            var NomeEsperado = "Guilherme";
+            var user = UserBuilder.Novo().Build();
+
+            user.AlterarNome(NomeEsperado);
+
+            Assert.Equal(NomeEsperado, user.Nome);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void NaoDeveAlterarNome(string nomeInvalido) {
+            var user = UserBuilder.Novo().Build();
+
+            Assert.Throws<ArgumentException>(() => user.AlterarNome(nomeInvalido))
+                .ComMensagem(Resource.NomeInvalido);
+        }
+
+        [Fact]
+        public void DevoAlterarSenha() {
+            var SenhaEsperada = "123ABC";
+            var user = UserBuilder.Novo().Build();
+
+            user.AlterarSenha(SenhaEsperada);
+
+            Assert.Equal(SenhaEsperada, user.Senha);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void NaoDeveAlterarSenha(string senhaInvalida) {
+            var user = UserBuilder.Novo().Build();
+
+            Assert.Throws<ArgumentException>(() => user.AlterarSenha(senhaInvalida))
+                .ComMensagem(Resource.SenhaInvalida);
         }
     }    
 }
