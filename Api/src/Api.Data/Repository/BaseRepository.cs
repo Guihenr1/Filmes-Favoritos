@@ -24,5 +24,9 @@ namespace Api.Data.Repository {
             var query = _context.Set<TEntity>().Where(e => e.Id == id);
             return query.Any() ? query.First() : null;
         }
+
+        public void Update(TEntity entity) {
+            _context.Update(entity);
+        }
     }
 }

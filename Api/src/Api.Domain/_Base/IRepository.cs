@@ -7,5 +7,6 @@ namespace Api.Domain._Base {
         TEntity GetById(int id);
         List<TEntity> Get();
         void Add(TEntity entity);
+        void Update(TEntity entity);
     }
 }

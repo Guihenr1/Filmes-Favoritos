@@ -24,6 +24,11 @@ namespace Api.Web.Controllers
             _userStore.Add(model);
             return Ok();
         }
+        [HttpPut]
+        public IActionResult Editar([FromBody]UserDto model) {
+            _userStore.Update(model);
+            return Ok();
+        }
         [HttpGet]
         public IActionResult Listar() {
             var result = _repository.Get();

@@ -43,11 +43,16 @@ namespace Api.DomainTest.FilmTest {
                 .ComMensagem(Resource.UsuarioJaCadastrado);
         }
 
-        //[Fact]
-        //public void DevoAlterarDadosDoUsuario() {
-        //    _userDto.CPF = "000.000.000-00";
-        //    var user = UserBuilder.Novo().Build();
-        //    _userRepositoryMock.Setup(r => r.getCpf)
-        //}
+        [Fact]
+        public void DevoAlterarDadosDoUsuario() {
+            _userDto.CPF = "000.000.000-00";
+            var user = UserBuilder.Novo().Build();
+            _userRepositoryMock.Setup(r => r.getCpf(_userDto.CPF)).Returns(user);
+
+            _userStore.Update(_userDto);
+            Assert.Equal(_userDto.CPF, user.CPF);
+            Assert.Equal(_userDto.Nome, user.Nome);
+            Assert.Equal(_userDto.Senha, user.Senha);
+        }
     }    
 }
